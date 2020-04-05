@@ -5,6 +5,8 @@ public class GameCanvas extends JPanel {
 
     MainCircles listener;
     long lastFrameTime;
+    float backgroundTimeCount = 0f; // считает время с момента последней смены фона
+    int backgroundInterval = 5; // интервал смены фона в секундах
 
     GameCanvas(MainCircles listener) {
         this.listener = listener;
@@ -18,6 +20,11 @@ public class GameCanvas extends JPanel {
         long currentTime = System.nanoTime();
         float deltaTime = (currentTime - lastFrameTime) * 0.000000001f;
         lastFrameTime = currentTime;
+        backgroundTimeCount += deltaTime;
+        if(backgroundTimeCount >= backgroundInterval) {
+            setBackground((new Backgroung()).getBackground());
+            backgroundTimeCount = 0f;
+        }
         listener.onCanvasRepainted(this, g, deltaTime);
         try {
             Thread.sleep(17);
