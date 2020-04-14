@@ -1,9 +1,9 @@
-package ru.gb.jtwo.d_lesson.online;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler {
 
@@ -25,6 +25,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     private final JButton btnSend = new JButton("Send");
 
     private final JList<String> userList = new JList<>();
+    private static FileWriter fileWriter;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -50,7 +51,10 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         log.setLineWrap(true);
         log.setWrapStyleWord(true);
         log.setEditable(false);
+
         cbAlwaysOnTop.addActionListener(this);
+        btnSend.addActionListener(this);
+        tfMessage.addActionListener(this);
 
         panelTop.add(tfIPAddress);
         panelTop.add(tfPort);
@@ -74,6 +78,16 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         Object src = e.getSource();
         if (src == cbAlwaysOnTop) {
             setAlwaysOnTop(cbAlwaysOnTop.isSelected());
+        } else if (src == btnSend || src == tfMessage) {
+            log.append(tfMessage.getText() + "\n");
+            try {
+                if (fileWriter == null)
+                    fileWriter = new FileWriter("E://testLog.txt",true);
+                tfMessage.write(fileWriter);
+            } catch (IOException ex) {
+                System.exit(1);
+            }
+            tfMessage.setText("");
         } else {
             throw new RuntimeException("Unknown source:" + src);
         }
