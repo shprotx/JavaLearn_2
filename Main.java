@@ -53,7 +53,7 @@ public class Main{
             public void run() {
                 System.out.println("Thread 2 started");
                 for (int i = 0; i < a2.length; i++) {
-                    a2[i] = (float)(a2[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
+                    a2[i] = (float)(a2[i] * Math.sin(0.2f + (i+h) / 5) * Math.cos(0.2f + (i+h) / 5) * Math.cos(0.4f + (i+h) / 2));
                 }
             }
         });
@@ -75,5 +75,6 @@ public class Main{
         t1.interrupt();
         t2.interrupt();
     }
+
 
 }
